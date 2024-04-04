@@ -5,6 +5,9 @@ import productsRoutes from "./routes/products";
 import bannerRouter from "./routes/banner";
 import productCategoryRouter from "./routes/productCategory";
 import contactRouter from "./routes/contact";
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 const app = express();
 
