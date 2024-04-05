@@ -12,17 +12,18 @@ dotenv.config();
 const app = express();
 
 // connect db
-mongoose
- .connect(process.env.MONGO_URI || "mongodb://0.0.0.0:27017/ecommerce")
- .then(() => {
-  console.log("database connected ");
-  app.listen(process.env.PORT, () => {
-   console.log("server started : ", process.env.PORT);
-  });
- })
- .catch((err) =>
-  console.log("something went wrong while connecting data base", err)
- );
+
+const connectDB = async () => {
+ try {
+  const conn = await mongoose.connect(
+   process.env.MONGO_URI || "mongodb://0.0.0.0:27017/ecommerce"
+  );
+  console.log(`MongoDB Connected: ${conn.connection.host}`);
+ } catch (error) {
+  console.log(error);
+  process.exit(1);
+ }
+};
 
 app.use(
  cors({
@@ -33,9 +34,15 @@ app.use(express.json());
 
 // main-website routes
 app.get("/", (req, res) => {
-  res.send("Working .....");
-})
+ res.send("Working .....");
+});
 app.use("/api/v1/products", productsRoutes);
 app.use("/api/v1/banners", bannerRouter);
 app.use("/api/v1/product-category", productCategoryRouter);
 app.use("/api/v1/contact", contactRouter);
+
+connectDB().then(() => {
+ app.listen(process.env.PORT, () => {
+  console.log("listening for requests");
+ });
+});
