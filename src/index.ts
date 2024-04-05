@@ -5,6 +5,7 @@ import productsRoutes from "./routes/products";
 import bannerRouter from "./routes/banner";
 import productCategoryRouter from "./routes/productCategory";
 import contactRouter from "./routes/contact";
+import cors from "cors";
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -19,6 +20,9 @@ mongoose
   console.log("something went wrong while connecting data base", err)
  );
 
+ app.use(cors({
+  origin: "*",
+ }));
 app.use(express.json());
 
 // main-website routes
