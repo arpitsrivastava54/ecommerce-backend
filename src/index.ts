@@ -6,8 +6,11 @@ import bannerRouter from "./routes/banner";
 import productCategoryRouter from "./routes/productCategory";
 import contactRouter from "./routes/contact";
 import cors from "cors";
+import NodeCache from "node-cache"
 import * as dotenv from "dotenv";
 dotenv.config();
+
+export const myCache = new NodeCache();
 
 const app = express();
 
