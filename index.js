@@ -74,6 +74,6 @@ app.use("/api/v1/product-category", productCategory_1.default);
 app.use("/api/v1/contact", contact_1.default);
 connectDB().then(() => {
     app.listen(process.env.PORT, () => {
-        console.log("listening for requests");
+        console.log("listening for requests...");
     });
 });

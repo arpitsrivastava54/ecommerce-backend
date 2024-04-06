@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tryCatchWrapper = void 0;
+exports.deleteEmptyCache = exports.tryCatchWrapper = void 0;
+const __1 = require("..");
 const tryCatchWrapper = (fn) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield fn(req, res, next);
@@ -22,3 +23,8 @@ const tryCatchWrapper = (fn) => (req, res, next) => __awaiter(void 0, void 0, vo
     }
 });
 exports.tryCatchWrapper = tryCatchWrapper;
+function deleteEmptyCache(key, data) {
+    if (data.length == 0)
+        __1.myCache.del(key);
+}
+exports.deleteEmptyCache = deleteEmptyCache;
