@@ -35,7 +35,7 @@ const productSchema = new Schema(
   },
   subCategory:{
     type:String,
-    enum:["men","women"],
+    enum:["men","women","customized"],
     required:[true,"Sub Category is required"],
   },
   sale:{

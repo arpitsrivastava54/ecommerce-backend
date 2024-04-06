@@ -46,6 +46,6 @@ app.use("/api/v1/contact", contactRouter);
 
 connectDB().then(() => {
  app.listen(process.env.PORT, () => {
-  console.log("listening for requests");
+  console.log("listening for requests...");
  });
 });

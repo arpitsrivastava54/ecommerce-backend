@@ -1,12 +1,16 @@
 import express from "express"
-import { getAllProducts, getLatestProducts, insertManyProducts, insertProuct } from "../controllers/mainWebsite/products";
+import { getProductById, getLatestProducts, insertManyProducts, insertProuct, getAllProduct, getFilteredProducts, getLatestRichProducts } from "../controllers/mainWebsite/products";
 
 const router = express.Router();
 
+router.get("/",getAllProduct);
 
-router.get("/",getAllProducts);
+//pass id=445646554 in queryparams
+router.get("/product",getProductById);
 router.get("/latest",getLatestProducts)
+router.get("/latestRichCollection",getLatestRichProducts)
 
+router.get("/filterdProducts",getFilteredProducts)
 
 
 
