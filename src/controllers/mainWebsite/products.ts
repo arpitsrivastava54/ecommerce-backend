@@ -27,19 +27,32 @@ export const getProductById = tryCatchWrapper(
  async (req: Request, res: Response) => {
   const { id } = req.query;
   const key = `product-${id}`;
-
+  let finalProduct;
   let product;
   if (myCache.has(key)) {
-   product = myCache.get(key);
+   finalProduct = myCache.get(key);
   } else {
    product = await Product.findById(id);
-   myCache.set(key, product);
+
+   if (!product)
+    throw new Error("Something went wrong while fetching the products by id");
+
+   let category = product?.category;
+   let subCategory = product?.subCategory;
+
+   const similarProducts = await Product.find({
+    category,
+    subCategory,
+   }).limit(15);
+
+   finalProduct = {
+    product,
+    similarProducts,
+   }
+   
+   myCache.set(key, finalProduct);
   }
-
-  if (!product)
-   throw new Error("Something went wrong while fetching the products by id");
-
-  res.status(200).json(new ApiResponse("Product fetch successfully", product));
+  res.status(200).json(new ApiResponse("Product fetch successfully", finalProduct));
  }
 );
 
@@ -62,16 +75,19 @@ export const getLatestProducts = tryCatchWrapper(async (req, res) => {
   products = myCache.get(key);
  } else {
   // TODO ==> This query needs Optimization
-
-  const first = await Product.find({ category: categories[0] })
-   .sort({ createdAt: -1 })
-   .limit(15);
-  const second = await Product.find({ category: categories[1] })
-   .sort({ createdAt: -1 })
-   .limit(15);
-  const third = await Product.find({ category: categories[2] })
-   .sort({ createdAt: -1 })
-   .limit(15);
+  let subCategory = id == "2" ? "women" : "men";
+  const first = await Product.find({
+   category: categories[0],
+   subCategory,
+  }).limit(15);
+  const second = await Product.find({
+   category: categories[1],
+   subCategory,
+  }).limit(15);
+  const third = await Product.find({
+   category: categories[2],
+   subCategory,
+  }).limit(15);
 
   products = [...first, ...second, ...third];
   myCache.set(key, products);
